@@ -5,19 +5,20 @@ from twilio.rest import Client
 from dotenv import load_dotenv
 
 load_dotenv()
-access_token = os.getenv('access_token')
-twilio_account_sid = os.getenv('twilio_account_sid')
-twilio_auth_token = os.getenv('twilio_auth_token')
-URL = os.getenv('url')
-NUMBER_FROM = os.getenv('phone_from')
-NUMBER_TO = os.getenv('phone_to')
+ACCESS_TOKEN = os.getenv('ACCESS_TOKEN')
+URL = os.getenv('URL')
+ACCOUNT_SID = os.getenv('ACCOUNT_SID')
+AUTH_TOKEN = os.getenv('AUTH_TOKEN')
+NUMBER_FROM = os.getenv('NUMBER_FROM')
+NUMBER_TO = os.getenv('NUMBER_TO')
+client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 
 def get_status(user_id):
     params = {
         'user_ids': user_id,
         'fields': 'online',
-        'access_token': access_token,
+        'access_token': ACCESS_TOKEN,
         'v': '5.92'
     }
     result = requests.post(URL, params=params).json().get('response')
@@ -26,8 +27,6 @@ def get_status(user_id):
 
 
 def sms_sender(sms_text):
-    client = Client(twilio_account_sid, twilio_auth_token)
-
     message = client.messages.create(
         to=NUMBER_TO,
         from_=NUMBER_FROM,
